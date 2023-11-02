@@ -28,27 +28,29 @@ overlap =double(GetNextLine(F));
 % Filtering
 responseType = GetNextLine(F);
 filterOrder = GetNextLine(F);
-ApproxMethod = GetNextLine(F);
+approxMethod = GetNextLine(F);
 filterType = GetNextLine(F);
 fb = regexp(GetNextLine(F),', ','split');
 fb = double(string(cell2mat(fb(:))));
 
 % Plotting
-Xlim = zeros(2,1);
-Ylim = zeros(2,1);
-Xlim(1) = double(GetNextLine(F));
-Ylim(1) = double(GetNextLine(F));
+xLimTime = zeros(2,1);
+yLimTime = zeros(2,1);
+xLimTime(2) = double(GetNextLine(F));
+yLimTime(2) = double(GetNextLine(F));
 axisTypeX = GetNextLine(F);
 axisTypeY = GetNextLine(F);
-XlimCopy = GetNextLine(F);
+xLimFrequency = zeros(2,1);
+yLimFrequency = zeros(2,1);
+xLimFrequencyCopy = GetNextLine(F);
 
-if XlimCopy == "nyquist"
-    Xlim(2) = fs/2;
+if xLimFrequencyCopy == "nyquist"
+    xLimFrequency(2) = fs/2;
 else
-    Xlim(2) = double(XlimCopy);
+    xLimFrequency(2) = double(XlimCopy);
 end
 
-Ylim(2) = double(GetNextLine(F));
+yLimFrequency(2) = double(GetNextLine(F));
 
 fclose(F);
 
