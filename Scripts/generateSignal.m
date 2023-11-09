@@ -10,7 +10,7 @@
 %   freqs = array of frequencies for tone complex (tone only uses first)
 
 %Asserts new variables:
-%   signal = generates signal
+%   signal = generated signal
 %   time_vector = time vector for generated signal
 
 if type == "rect"
@@ -71,7 +71,7 @@ function [time_vector, signal] = generate_tone_complex(freqs, fs, T_s)
 
 time_vector = 1/fs:1/fs:T_s;
 
-signal = sin(2*pi*freqs(1)*t_s);
+signal = sin(2*pi*freqs(1)*time_vector);
 for i = 2:length(freqs)
     signal = signal + sin(2*pi*freqs(i)*time_vector);
 end
