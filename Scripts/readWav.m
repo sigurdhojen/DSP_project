@@ -8,5 +8,5 @@
 %   signal_read = signal read from .wav file
 %   fs_read = sampling frequency of read signal
 
-path_2_wav = [pwd, filesep];
-[signal_read, fs_read] = audioread([path_2_wav, filename]);
+Path2WAV = [pwd, filesep];
+[SignalRead, FsRead] = audioread([Path2WAV, FileName]);

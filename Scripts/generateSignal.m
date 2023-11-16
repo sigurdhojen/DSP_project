@@ -13,83 +13,83 @@
 %   signal = generated signal
 %   time_vector = time vector for generated signal
 
-if type == "rect"
-    [time_vector, signal] = generate_rect(T_0, fs, T_s);
-elseif type == "tone"
-    [time_vector, signal] = generate_sinusoid(freqs(1), fs, T_s);
-elseif type == "tone-complex"
-    [time_vector, signal] = generate_tone_complex(freqs, fs, T_s);
-elseif type == "noise"
-    [time_vector, signal] = generate_noise(fs, T_s);
+if Type == "rect"
+    [TimeVector, Signal] = GenerateRect(T0, Fs, Ts);
+elseif Type == "tone"
+    [TimeVector, Signal] = GenerateSinusoid(Freqs(1), Fs, Ts);
+elseif Type == "tone-complex"
+    [TimeVector, Signal] = GenerateToneComplex(Freqs, Fs, Ts);
+elseif Type == "noise"
+    [TimeVector, Signal] = GenerateNoise(Fs, Ts);
 end
 
 
 
 %% Functions
 
-function [time_vector, signal] = generate_rect(T_0, fs, T_s)
+function [TimeVector, Signal] = GenerateRect(T0, Fs, Ts)
 %fs = sampling frequency in Hz
 %T_s = total duration in s
 %T_0 = duration of period T0 in s
 
-time_vector = 1/fs:1/fs:T_s;
-signal = [];
+TimeVector = 1/Fs:1/Fs:Ts;
+Signal = [];
 
-for i = 1:floor(T_s/T_0)
-    square_on = ones(1,floor(fs*T_0/2));
-    square = [square_on zero_pad(ceil(fs*T_0/2))];
-    signal = [signal square];
+for i = 1:floor(Ts/T0)
+    SquareOn = ones(1,floor(Fs*T0/2));
+    Square = [SquareOn ZeroPad(ceil(Fs*T0/2))];
+    Signal = [Signal Square];
 end
 
-i = mod(T_s,T_0);
+i = mod(Ts,T0);
 
 if i < T_0
-    square_on = ones(1,i);
-    signal = [signal square_on];
+    SquareOn = ones(1,i);
+    Signal = [Signal SquareOn];
 else
-    square_on = ones(1,fs*T_0/2);
-    square = [square_on zero_pad(i - T_0/2)];
-    signal = [signal square];
+    SquareOn = ones(1,Fs*T0/2);
+    Square = [SquareOn ZeroPad(i - T0/2)];
+    Signal = [Signal Square];
 end
 
 end
 
-function [time_vector, signal] = generate_sinusoid(f, fs, T_s)
+function [TimeVector, Signal] = GenerateSinusoid(F, Fs, Ts)
 % f = frequency of sinusoid
 % fs = sampling frequency
 % T_s = total duration in s
 
-time_vector = 1/fs:1/fs:T_s;
-signal = sin(2*pi*f*time_vector);
+TimeVector = 1/Fs:1/Fs:Ts;
+Signal = sin(2*pi*F*TimeVector);
 
 end
 
-function [time_vector, signal] = generate_tone_complex(freqs, fs, T_s)
+function [TimeVector, Signal] = GenerateToneComplex(Freqs, Fs, Ts)
 % freqs = frequencies of desired sinusoids
 % fs = sampling frequency
 % T_s = total duration in s
 
-time_vector = 1/fs:1/fs:T_s;
+TimeVector = 1/Fs:1/Fs:Ts;
 
-signal = sin(2*pi*freqs(1)*time_vector);
-for i = 2:length(freqs)
-    signal = signal + sin(2*pi*freqs(i)*time_vector);
+Signal = sin(2*pi*Freqs(1)*TimeVector);
+for i = 2:length(Freqs)
+    Signal = Signal + sin(2*pi*Freqs(i)*TimeVector);
 end
 
 end
 
-function [time_vector, signal] = generate_noise(fs, T_s)
+function [TimeVector, Signal] = GenerateNoise(Fs, Ts)
 % fs = sampling frequency
 % T_s = total duration in s
 
-time_vector = 1/fs:1/fs:T_s;
-signal = rand(1,length(time_vector));
+TimeVector = 1/Fs:1/Fs:Ts;
+Signal = rand(1,length(TimeVector));
 
 end
 
-function [x] = zero_pad(N)
+function [X] = ZeroPad(N)
 % N = number of zeroes
 
-x = zeros(1,fix(N));
+X = zeros(1,fix(N));
 
 end

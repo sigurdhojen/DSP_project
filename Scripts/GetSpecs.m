@@ -1,56 +1,57 @@
-% Load file and discard the first line
-F = fopen("global_specs.txt","r");
+% Load file
+FilePath = fullfile('..', "global_specs.txt");
+F = fopen(FilePath,"r");
 
 % Get input type
-input = GetNextLine(F);
+Input = GetNextLine(F);
 
-if input == "wav"
+if Input == "wav"
     % Get filename and it's sampling frequency
-    filename = GetNextLine(F);
-    fs = double(GetNextLine(F));
+    FileName = GetNextLine(F);
+    Fs = double(GetNextLine(F));
     GetNextLine(F);GetNextLine(F);GetNextLine(F);GetNextLine(F);GetNextLine(F);
 else
     % Get signal generator variables
     GetNextLine(F); GetNextLine(F);
-    type = GetNextLine(F);
-    fs = double(GetNextLine(F));
-    T_s = double(GetNextLine(F));
-    T_0 = double(GetNextLine(F));
-    freqs = regexp(GetNextLine(F),', ','split');
-    freqs = double(string(cell2mat(freqs(:))));
+    Type = GetNextLine(F);
+    Fs = double(GetNextLine(F));
+    Ts = double(GetNextLine(F));
+    T0 = double(GetNextLine(F));
+    Freqs = regexp(GetNextLine(F),', ','split');
+    Freqs = double(string(cell2mat(Freqs(:))));
 end
 
 % Frequency analysis
-spectralResolution = double(GetNextLine(F));
-windowType = GetNextLine(F);
-overlap =double(GetNextLine(F));
+SpectralResolution = double(GetNextLine(F));
+WindowType = GetNextLine(F);
+Overlap =double(GetNextLine(F));
 
 % Filtering
-responseType = GetNextLine(F);
-filterOrder = GetNextLine(F);
-approxMethod = GetNextLine(F);
-filterType = GetNextLine(F);
-fb = regexp(GetNextLine(F),', ','split');
-fb = double(string(cell2mat(fb(:))));
+ResponseType = GetNextLine(F);
+FilterOrder = GetNextLine(F);
+ApproxMethod = GetNextLine(F);
+FilterType = GetNextLine(F);
+Fb = regexp(GetNextLine(F),', ','split');
+Fb = double(string(cell2mat(Fb(:))));
 
 % Plotting
-xLimTime = zeros(2,1);
-yLimTime = zeros(2,1);
-xLimTime(2) = double(GetNextLine(F));
-yLimTime(2) = double(GetNextLine(F));
-axisTypeX = GetNextLine(F);
-axisTypeY = GetNextLine(F);
-xLimFrequency = zeros(2,1);
-yLimFrequency = zeros(2,1);
-xLimFrequencyCopy = GetNextLine(F);
+XLimTime = zeros(2,1);
+YLimTime = zeros(2,1);
+XLimTime(2) = double(GetNextLine(F));
+YLimTime(2) = double(GetNextLine(F));
+AxisTypeX = GetNextLine(F);
+AxisTypeY = GetNextLine(F);
+XLimFrequency = zeros(2,1);
+YLimFrequency = zeros(2,1);
+XLimFrequencyCopy = GetNextLine(F);
 
-if xLimFrequencyCopy == "nyquist"
-    xLimFrequency(2) = fs/2;
+if XLimFrequencyCopy == "nyquist"
+    XLimFrequency(2) = Fs/2;
 else
-    xLimFrequency(2) = double(XlimCopy);
+    XLimFrequency(2) = double(XLimFrequencyCopy);
 end
 
-yLimFrequency(2) = double(GetNextLine(F));
+YLimFrequency(2) = double(GetNextLine(F));
 
 fclose(F);
 
