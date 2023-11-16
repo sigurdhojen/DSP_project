@@ -10,9 +10,9 @@
 %Asserts new variables:
 %   signal = read signal at desired sampling frequency
 
-if fs_read == fs
-    signal = signal_read;
+if FsRead == Fs
+    Signal = SignalRead;
 else
-    signal = Resample(signal_read, fs_read, fs);
+    Signal = Resample(SignalRead, FsRead, Fs);
 end
 
