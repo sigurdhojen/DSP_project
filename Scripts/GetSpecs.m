@@ -1,5 +1,6 @@
-% Load file and discard the first line
-F = fopen("global_specs.txt","r");
+% Load file
+FilePath = fullfile('..', "global_specs.txt");
+F = fopen(FilePath,"r");
 
 % Get input type
 Input = GetNextLine(F);
