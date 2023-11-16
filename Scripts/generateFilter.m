@@ -3,26 +3,26 @@
 % run('Scripts/generateFilter.m');
 
 %Requires set variables:
-%   responseType = whether the filter is IIR or FIR, either "fir" or "iir"
-%   approxMethod = approximation method, either "butterworth", "chebychevI", "chebychevII", "cauer"
-%   filterOrder = filter order
-%   filterType = filter type, either "lp", "hp", "bp", "bs"
-%   cutoff = cutoff frequencies, array of up to two values
-%   xLimFrequency = frequency limit for normalizing cutoff frequency
-%   fs = sampling frequency
-%   signal = signal to be filtered
+%   ResponseType = whether the filter is IIR or FIR, either "fir" or "iir"
+%   ApproxMethod = approximation method, either "butterworth", "chebychevI", "chebychevII", "cauer"
+%   FilterOrder = filter order
+%   FilterType = filter type, either "lp", "hp", "bp", "bs"
+%   Fb = cutoff frequencies, array of up to two values
+%   XLimFrequency = frequency limit for normalizing cutoff frequency
+%   Fs = sampling frequency
+%   Signal = signal to be filtered
 
 %Asserts new variables:
 %  Output = the filtered signal
 
 %Define type
-if filterType == "lp"
+if FilterType == "lp"
     ftype = 'low';
-elseif filterType == "hp"
+elseif FilterType == "hp"
     ftype = 'high';
-elseif filterType == "bp"
+elseif FilterType == "bp"
     ftype = 'bandpass';
-elseif filterType == "bs"
+elseif FilterType == "bs"
     ftype = 'stop';
 end
 
@@ -31,29 +31,31 @@ Rs = 32;
 Rp = 0.2;
 
 %Define filter from type
-if approxMethod == "butterworth"
-    [num, denom] = butter(filterOrder, cutoff/xLimFrequency, ftype);
-elseif approxMethod == "chebychevI"
-    [num, denom] = cheby1(filterOrder, Rp, cutoff/xLimFrequency, ftype);
-elseif approxMethod == "chebychevII"
-    [num, denom] = cheby2(filterOrder, Rs, cutoff/xLimFrequency, ftype);
-elseif approxMethod == "cauer"
-    [num, denom] = ellip(filterOrder, Rp, Rs, cutoff/xLimFrequency, ftype);
+if ResponseType == "fir"
+    nFilter = 15;
+elseif ResponseType == "iir"
+    nFilter = filterOrder;
 end
 
-%Apply response type
-if responseType == "fir"
-    [h, t] = impz(num, denom, [], fs);
-    
-    b = [];
-    a = 1;
-    for i = 1:(filterOrder*10)
-    b = [b ; h(floor(length(h)/(filterOrder*10))*i)];
-    end
-elseif responseType == "iir"
-    b = num;
-    a = denom;
+if ApproxMethod == "butterworth"
+    [num, denom] = butter(nFilter, Fb/XLimFrequency, ftype);
+elseif ApproxMethod == "chebychevI"
+    [num, denom] = cheby1(nFilter, Rp, Fb/XLimFrequency, ftype);
+elseif ApproxMethod == "chebychevII"
+    [num, denom] = cheby2(nFilter, Rs, Fb/XLimFrequency, ftype);
+elseif ApproxMethod == "cauer"
+    [num, denom] = ellip(nFilter, Rp, Rs, Fb/XLimFrequency, ftype);
 end
 
-%Filter
-output = filter(b, a, signal);
+%Apply response type and filter
+if ResponseType == "fir"
+    [h,~] = impz(num, denom, floor(FilterOrder/2));
+    h = [flip(h(2:end)); h];
+
+    Output = conv(h, Signal);
+    Output = Output(1:length(Signal));
+elseif ResponseType == "iir"
+    Output = filter(num, denom, Signal);
+end
+
+
