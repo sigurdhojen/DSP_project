@@ -22,7 +22,7 @@ else
 end
 
 % Frequency analysis
-SpectralResolution = double(GetNextLine(F)) * 1000; % Did he mean 1 KHz?
+SpectralResolution = double(GetNextLine(F));
 WindowType = GetNextLine(F);
 Overlap =double(GetNextLine(F));
 
