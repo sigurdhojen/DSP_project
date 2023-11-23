@@ -12,22 +12,26 @@ A = 1;
 freq = 500;
 phas = 0;
 [time_vector, signal] = generate_sin(fs,T,A,freq,phas);
-axisTypeX = "log";
+axisTypeX = "l";
 axisTypeY = "log";
-xLimTime = [0,0.01];
-yLimTime = [0,1];
+xLimTime = [0,1];
+yLimTime = [-2,2];
 xLimFrequency = [0,fs/2];
 yLimFrequency = [0,200];
-a = [2 5 1];
-b = [1 3 5];
+a = [1 10];
+b = [2 10 100];
 sysTF=tf(a,b);
 FFTSignal = fft(signal);
 
 %Time plots
-figure(1);
+time_signal = signal;
+if axisTypeX == "log"
+    time_signal = 20*log10(signal);
+end
+figure(timeplot);
 grid on
 hold on;
-plot(time_vector, signal);
+plot(time_vector, time_signal);
 xlim(xLimTime);
 ylim(yLimTime);
 title TimeSignal;
@@ -48,12 +52,12 @@ hold off;
 % hold off;
 
 %"ImpResp"
-figure(2);
+figure(impulseresponseplot);
 hold on;
 %plot(time_vector,impulse(sysTF));
 impulse(sysTF);
-%xlim(xLimTime);
-%ylim(yLimTime);
+xlim(xLimTime);
+ylim(yLimTime);
 title "ImpulseResponse";
 hold off;
 
@@ -62,7 +66,7 @@ delta_f = fs/2 / length(FFTSignal);
 freq_vector = delta_f:delta_f:fs/2;      % we'll hit fs/2
 
 %"BodePLot"
-figure(3);
+figure(bodeplot);
 opt = bodeoptions;
 opt.Grid = 'on';
 if axisTypeX == "lin"
@@ -77,11 +81,11 @@ hold off;
 %"RealImg"
 % delta_f = fs/2 / length(FFTSignal);
 % freq_vector = delta_f:delta_f:fs/2;
-figure(4);
+figure(RIFFT);
 if axisTypeX == "lin"
     if axisTypeY == "lin"
         hold on;
-        title "TimeSignal";
+        title "ComplexFFT";
         subplot(2,1,1)
         plot(freq_vector, real(FFTSignal));
         xlim(xLimFrequency);
@@ -97,7 +101,7 @@ if axisTypeX == "lin"
         hold off;
     elseif axisTypeY == "log"
         hold on;
-        title "TimeSignal";
+        title "ComplexFFT";
         subplot(2,1,1)
         plot(freq_vector, real(20*log10(FFTSignal)));
         xlim(xLimFrequency);
@@ -115,7 +119,7 @@ if axisTypeX == "lin"
 elseif axisTypeX == "log"
     if axisTypeY == "lin"
         hold on;
-        title "TimeSignal";
+        title "ComplexFFT";
         subplot(2,1,1)
         semilogx(freq_vector, real(FFTSignal));
         xlim(xLimFrequency);
@@ -131,7 +135,7 @@ elseif axisTypeX == "log"
         hold off;
     elseif axisTypeY == "log"
         hold on;
-        title "TimeSignal";
+        title "ComplexFFT";
         subplot(2,1,1)
         semilogx(freq_vector, real(20*log10(FFTSignal)));
         xlim(xLimFrequency);
@@ -152,11 +156,11 @@ end
 % delta_f = fs/2 / length(FFTSignal);
 % freq_vector = delta_f:delta_f:fs/2;
 % logfreq_vector = logspace(delta_f,fs/2,delta_f);
-figure(5);
+figure(FFTplot);
 if axisTypeX == "lin"
     if axisTypeY == "lin"
         hold on;
-        title "FFT1";
+        title "FFT";
         plot(freq_vector, FFTSignal);
         xlim(xLimFrequency);
         ylim(yLimFrequency);
@@ -164,7 +168,7 @@ if axisTypeX == "lin"
         hold off;
     elseif axisTypeY == "log"
         hold on;
-        title "FFT2";
+        title "FFT";
         plot(freq_vector, 20*log10(FFTSignal));
         xlim(xLimFrequency);
         ylim(yLimFrequency);
@@ -174,7 +178,7 @@ if axisTypeX == "lin"
 elseif axisTypeX == "log"
     if axisTypeY == "lin"
         hold on;
-        title "FFT3";
+        title "FFT";
         semilogx(freq_vector, FFTSignal);
         xlim(xLimFrequency);
         ylim(yLimFrequency);
@@ -182,7 +186,7 @@ elseif axisTypeX == "log"
         hold off;
     elseif axisTypeY == "log"
         hold on;
-        title "FFT4";
+        title "FFT";
         semilogx(freq_vector, 20*log10(FFTSignal));
         xlim(xLimFrequency);
         ylim(yLimFrequency);
@@ -192,7 +196,7 @@ elseif axisTypeX == "log"
 end
 
 %"PoleZero"
-figure(6);
+figure(PZplot);
 hold on
 pzplot(sysTF)
 title Pole-Zero Plot
