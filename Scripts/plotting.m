@@ -32,18 +32,22 @@ time_signal = signal;
 if axisTypeX == "log"
     time_signal = 20*log10(signal);
 end
-a = figure("visible","off");
+TimePlot = figure("Units", "centimeters", ...
+           "Position", [0, 0, 15, 10], ...
+           "PaperSize", [15 10]);
 grid on
 hold on;
 plot(time_vector, time_signal);
-timeplot = gca;
 xlim(xLimTime);
 ylim(yLimTime);
 title TimeSignal;
+TimePlot.Visible = "Off";
 hold off;
 
 %"ImpResp"
-b = figure("visible","off");
+ImpulseResponsePlot = figure("Units", "centimeters", ...
+                             "Position", [0, 0, 15, 10], ...
+                             "PaperSize", [15 10]);
 hold on;
 %plot(time_vector,impulse(sysTF));
 impulse(sysTF);
@@ -51,28 +55,33 @@ impulseresponseplot = gca;
 xlim(xLimTime);
 ylim(yLimTime);
 title "ImpulseResponse";
+ImpulseResponsePlot.Visible = "off";
 hold off;
 
 %"BodePLot"
-c = figure("visible","off");
+BodePlot = figure("Units", "centimeters", ...
+                  "Position", [0, 0, 15, 10], ...
+                  "PaperSize", [15 10]);
 opt = bodeoptions;
 opt.Grid = 'on';
 if axisTypeX == "lin"
     opt.FreqScale = 'Linear';
-else     
+else
 end
 hold on;
 title BodePlot;
 bode(sysTF,opt,{xLimFrequency(1),xLimFrequency(2)});
-bodeplot = gca;
+BodePlot.Visible = "off";
 hold off;
 
 %"RealImg"
-d = figure("visible","off");
+RIFFTPlot = figure("Units", "centimeters", ...
+                   "Position", [0, 0, 15, 10], ...
+                   "PaperSize", [15 10]);
+hold on;
+title "ComplexFFT";
 if axisTypeX == "lin"
     if axisTypeY == "lin"
-        hold on;
-        title "ComplexFFT";
         subplot(2,1,1)
         plot(freq_vector, real(FFTSignal));
         xlim(xLimFrequency);
@@ -85,10 +94,7 @@ if axisTypeX == "lin"
         ylim(yLimFrequency);
         grid on
         subtitle "Imaginary";
-        hold off;
     elseif axisTypeY == "log"
-        hold on;
-        title "ComplexFFT";
         subplot(2,1,1)
         plot(freq_vector, real(20*log10(FFTSignal)));
         xlim(xLimFrequency);
@@ -101,12 +107,9 @@ if axisTypeX == "lin"
         ylim(yLimFrequency);
         grid on
         subtitle "Imaginary";
-        hold off;
     end
 elseif axisTypeX == "log"
     if axisTypeY == "lin"
-        hold on;
-        title "ComplexFFT";
         subplot(2,1,1)
         semilogx(freq_vector, real(FFTSignal));
         xlim(xLimFrequency);
@@ -119,10 +122,7 @@ elseif axisTypeX == "log"
         ylim(yLimFrequency);
         grid on
         subtitle "Imaginary";
-        hold off;
     elseif axisTypeY == "log"
-        hold on;
-        title "ComplexFFT";
         subplot(2,1,1)
         semilogx(freq_vector, real(20*log10(FFTSignal)));
         xlim(xLimFrequency);
@@ -133,15 +133,16 @@ elseif axisTypeX == "log"
         semilogx(freq_vector, imag(20*log10(FFTSignal)));
         xlim(xLimFrequency);
         ylim(yLimFrequency);
-        grid on
         subtitle "Imaginary";
-        hold off;
     end
 end
-RIFFT = gca;
+RIFFTPlot.Visible = "on";
+hold off;
 
 %FFT
-e = figure("visible","off");
+FFTPlot = figure("Units", "centimeters", ...
+                 "Position", [0, 0, 15, 10], ...
+                 "PaperSize", [15 10]);
 if axisTypeX == "lin"
     if axisTypeY == "lin"
         hold on;
@@ -150,7 +151,6 @@ if axisTypeX == "lin"
         xlim(xLimFrequency);
         ylim(yLimFrequency);
         grid on
-        hold off;
     elseif axisTypeY == "log"
         hold on;
         title "FFT";
@@ -158,7 +158,6 @@ if axisTypeX == "lin"
         xlim(xLimFrequency);
         ylim(yLimFrequency);
         grid on
-        hold off;
     end
 elseif axisTypeX == "log"
     if axisTypeY == "lin"
@@ -168,7 +167,6 @@ elseif axisTypeX == "log"
         xlim(xLimFrequency);
         ylim(yLimFrequency);
         grid on
-        hold off;
     elseif axisTypeY == "log"
         hold on;
         title "FFT";
@@ -176,18 +174,21 @@ elseif axisTypeX == "log"
         xlim(xLimFrequency);
         ylim(yLimFrequency);
         grid on
-        hold off;
     end
 end
-FFTplot = gca;
+FFTPlot.Visible = "off";
+hold off;
 
 %"PoleZero"
-f = figure("visible","off");
+PoleZeroPlot = figure("Units", "centimeters", ...
+                      "Position", [0, 0, 15, 10], ...
+                      "PaperSize", [15 10]);
 hold on
 pzplot(sysTF)
 PZplot = gca;
 title Pole-Zero Plot
 grid on
+PoleZeroPlot.Visible = "off";
 hold off
 % 
 
