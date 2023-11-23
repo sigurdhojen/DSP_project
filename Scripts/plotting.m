@@ -6,29 +6,33 @@
 %yLimFrequency
 %xLimFrequencyCopy
 %testing
-% fs = 10000;             % sampling frequency
-% T = 1;   % duration in time (which we'll calculate below to check)
-% A = 1;
-% freq = 500;
-% phas = 0;
-% [time_vector, signal] = generate_sin(fs,T,A,freq,phas);
-% axisTypeX = "l";
-% axisTypeY = "log";
-% xLimTime = [0,1];
-% yLimTime = [-2,2];
-% xLimFrequency = [0,fs/2];
-% yLimFrequency = [0,200];
-% a = [1 10];
-% b = [2 10 100];
-% sysTF=tf(a,b);
-% FFTSignal = fft(signal);
+fs = 10000;             % sampling frequency
+T = 1;   % duration in time (which we'll calculate below to check)
+A = 1;
+freq = 500;
+phas = 0;
+[time_vector, signal] = generate_sin(fs,T,A,freq,phas);
+axisTypeX = "l";
+axisTypeY = "log";
+xLimTime = [0,1];
+yLimTime = [-2,2];
+xLimFrequency = [0,fs/2];
+yLimFrequency = [0,200];
+a = [1 10];
+b = [2 10 100];
+sysTF=tf(a,b);
+FFTSignal = fft(signal);
+
+%Frequency plots
+delta_f = fs/2 / length(FFTSignal);
+freq_vector = delta_f:delta_f:fs/2;      % we'll hit fs/2
 
 %Time plots
 time_signal = signal;
 if axisTypeX == "log"
     time_signal = 20*log10(signal);
 end
-figure(timeplot);
+a = figure("visible","off");
 grid on
 hold on;
 plot(time_vector, time_signal);
@@ -38,22 +42,8 @@ ylim(yLimTime);
 title TimeSignal;
 hold off;
 
-% %*"MagPhase_TimeDomain"
-% hold on;
-% title TimeSignal;
-% subplot(2,1,1);
-% plot(time_vector,20*log10(signal));
-% xlim(xLimTime);
-% ylim(yLimTime);
-% subtitle Magnitude
-% subplot(2,1,2);
-% plot(time_vector, angle(signal));
-% xlim(xLimTime);
-% subtitle Phase
-% hold off;
-
 %"ImpResp"
-figure(impulseresponseplot);
+b = figure("visible","off");
 hold on;
 %plot(time_vector,impulse(sysTF));
 impulse(sysTF);
@@ -63,12 +53,8 @@ ylim(yLimTime);
 title "ImpulseResponse";
 hold off;
 
-%Frequency plots
-delta_f = fs/2 / length(FFTSignal);
-freq_vector = delta_f:delta_f:fs/2;      % we'll hit fs/2
-
 %"BodePLot"
-figure(bodeplot);
+c = figure("visible","off");
 opt = bodeoptions;
 opt.Grid = 'on';
 if axisTypeX == "lin"
@@ -82,9 +68,7 @@ bodeplot = gca;
 hold off;
 
 %"RealImg"
-% delta_f = fs/2 / length(FFTSignal);
-% freq_vector = delta_f:delta_f:fs/2;
-figure(RIFFT);
+d = figure("visible","off");
 if axisTypeX == "lin"
     if axisTypeY == "lin"
         hold on;
@@ -155,11 +139,9 @@ elseif axisTypeX == "log"
     end
 end
 RIFFT = gca;
+
 %FFT
-% delta_f = fs/2 / length(FFTSignal);
-% freq_vector = delta_f:delta_f:fs/2;
-% logfreq_vector = logspace(delta_f,fs/2,delta_f);
-figure(FFTplot);
+e = figure("visible","off");
 if axisTypeX == "lin"
     if axisTypeY == "lin"
         hold on;
@@ -198,8 +180,9 @@ elseif axisTypeX == "log"
     end
 end
 FFTplot = gca;
+
 %"PoleZero"
-figure(PZplot);
+f = figure("visible","off");
 hold on
 pzplot(sysTF)
 PZplot = gca;
