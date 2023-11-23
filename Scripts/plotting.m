@@ -6,22 +6,22 @@
 %yLimFrequency
 %xLimFrequencyCopy
 %testing
-fs = 10000;             % sampling frequency
-T = 1;   % duration in time (which we'll calculate below to check)
-A = 1;
-freq = 500;
-phas = 0;
-[time_vector, signal] = generate_sin(fs,T,A,freq,phas);
-axisTypeX = "l";
-axisTypeY = "log";
-xLimTime = [0,1];
-yLimTime = [-2,2];
-xLimFrequency = [0,fs/2];
-yLimFrequency = [0,200];
-a = [1 10];
-b = [2 10 100];
-sysTF=tf(a,b);
-FFTSignal = fft(signal);
+% fs = 10000;             % sampling frequency
+% T = 1;   % duration in time (which we'll calculate below to check)
+% A = 1;
+% freq = 500;
+% phas = 0;
+% [time_vector, signal] = generate_sin(fs,T,A,freq,phas);
+% axisTypeX = "l";
+% axisTypeY = "log";
+% xLimTime = [0,1];
+% yLimTime = [-2,2];
+% xLimFrequency = [0,fs/2];
+% yLimFrequency = [0,200];
+% a = [1 10];
+% b = [2 10 100];
+% sysTF=tf(a,b);
+% FFTSignal = fft(signal);
 
 %Time plots
 time_signal = signal;
@@ -32,6 +32,7 @@ figure(timeplot);
 grid on
 hold on;
 plot(time_vector, time_signal);
+timeplot = gca;
 xlim(xLimTime);
 ylim(yLimTime);
 title TimeSignal;
@@ -56,6 +57,7 @@ figure(impulseresponseplot);
 hold on;
 %plot(time_vector,impulse(sysTF));
 impulse(sysTF);
+impulseresponseplot = gca;
 xlim(xLimTime);
 ylim(yLimTime);
 title "ImpulseResponse";
@@ -76,6 +78,7 @@ end
 hold on;
 title BodePlot;
 bode(sysTF,opt,{xLimFrequency(1),xLimFrequency(2)});
+bodeplot = gca;
 hold off;
 
 %"RealImg"
@@ -151,7 +154,7 @@ elseif axisTypeX == "log"
         hold off;
     end
 end
-
+RIFFT = gca;
 %FFT
 % delta_f = fs/2 / length(FFTSignal);
 % freq_vector = delta_f:delta_f:fs/2;
@@ -194,15 +197,17 @@ elseif axisTypeX == "log"
         hold off;
     end
 end
-
+FFTplot = gca;
 %"PoleZero"
 figure(PZplot);
 hold on
 pzplot(sysTF)
+PZplot = gca;
 title Pole-Zero Plot
 grid on
 hold off
 % 
+
 function [time_vector, signal] = generate_sin(fs,T_tot, A, freq, phas)
     time_vector = 1/fs:1/fs:T_tot;
     signal = A*sin(2*pi*freq*time_vector+2*pi*phas);
