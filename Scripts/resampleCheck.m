@@ -16,3 +16,4 @@ else
     Signal = Resample(SignalRead, FsRead, Fs);
 end
 
+TimeVector = 1/Fs:1/Fs:length(Signal)/Fs;
