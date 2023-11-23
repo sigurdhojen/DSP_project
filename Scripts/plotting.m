@@ -6,22 +6,22 @@
 %yLimFrequency
 %xLimFrequencyCopy
 %testing
-fs = 10000;             % sampling frequency
-T = 1;   % duration in time (which we'll calculate below to check)
-A = 1;
-freq = 500;
-phas = 0;
-[time_vector, signal] = generate_sin(fs,T,A,freq,phas);
-axisTypeX = "l";
-axisTypeY = "log";
-xLimTime = [0,1];
-yLimTime = [-2,2];
-xLimFrequency = [0,fs/2];
-yLimFrequency = [0,200];
-a = [1 10];
-b = [2 10 100];
-sysTF=tf(a,b);
-FFTSignal = fft(signal);
+% fs = 10000;             % sampling frequency
+% T = 1;   % duration in time (which we'll calculate below to check)
+% A = 1;
+% freq = 500;
+% phas = 0;
+% [time_vector, signal] = generate_sin(fs,T,A,freq,phas);
+% axisTypeX = "l";
+% axisTypeY = "log";
+% xLimTime = [0,1];
+% yLimTime = [-2,2];
+% xLimFrequency = [0,fs/2];
+% yLimFrequency = [0,200];
+% a = [1 10];
+% b = [2 10 100];
+% sysTF=tf(a,b);
+% FFTSignal = fft(signal);
 
 %Frequency plots
 delta_f = fs/2 / length(FFTSignal);
