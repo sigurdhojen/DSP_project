@@ -43,8 +43,8 @@ end
 
 i = mod(Ts,T0);
 
-if i < T_0
-    SquareOn = ones(1,i);
+if i < T0
+    SquareOn = ones(1,Fs*i);
     Signal = [Signal SquareOn];
 else
     SquareOn = ones(1,Fs*T0/2);
