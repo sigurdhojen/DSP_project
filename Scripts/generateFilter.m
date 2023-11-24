@@ -34,24 +34,23 @@ Rp = 0.2;
 if ResponseType == "fir"
     nFilter = 15;
 elseif ResponseType == "iir"
-    nFilter = filterOrder;
+    nFilter = FilterOrder;
 end
 
 if ApproxMethod == "butterworth"
-    [num, denom] = butter(nFilter, Fb/XLimFrequency, ftype);
+    [num, denom] = butter(nFilter, Fb/XLimFrequency(2), ftype);
 elseif ApproxMethod == "chebychevI"
-    [num, denom] = cheby1(nFilter, Rp, Fb/XLimFrequency, ftype);
+    [num, denom] = cheby1(nFilter, Rp, Fb/XLimFrequency(2), ftype);
 elseif ApproxMethod == "chebychevII"
-    [num, denom] = cheby2(nFilter, Rs, Fb/XLimFrequency, ftype);
+    [num, denom] = cheby2(nFilter, Rs, Fb/XLimFrequency(2), ftype);
 elseif ApproxMethod == "cauer"
-    [num, denom] = ellip(nFilter, Rp, Rs, Fb/XLimFrequency, ftype);
+    [num, denom] = ellip(nFilter, Rp, Rs, Fb/XLimFrequency(2), ftype);
 end
 
 %Apply response type and filter
 if ResponseType == "fir"
     [h,~] = impz(num, denom, floor(FilterOrder/2));
-    h = [flip(h(2:end)); h];
-
+    h = [flip(h(1+mod(FilterOrder+1,2):end)); h];
     Output = conv(h, Signal);
     Output = Output(1:length(Signal));
 elseif ResponseType == "iir"

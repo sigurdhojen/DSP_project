@@ -28,7 +28,7 @@ Overlap =double(GetNextLine(F));
 
 % Filtering
 ResponseType = GetNextLine(F);
-FilterOrder = GetNextLine(F);
+FilterOrder = double(GetNextLine(F));
 ApproxMethod = GetNextLine(F);
 FilterType = GetNextLine(F);
 Fb = regexp(GetNextLine(F),', ','split');
@@ -39,6 +39,7 @@ XLimTime = zeros(2,1);
 YLimTime = zeros(2,1);
 XLimTime(2) = double(GetNextLine(F));
 YLimTime(2) = double(GetNextLine(F));
+YLimTime(1) = -YLimTime(2);
 AxisTypeX = GetNextLine(F);
 AxisTypeY = GetNextLine(F);
 XLimFrequency = zeros(2,1);
@@ -52,6 +53,7 @@ else
 end
 
 YLimFrequency(2) = double(GetNextLine(F));
+YLimFrequency(1) = -YLimFrequency(2);
 
 fclose(F);
 

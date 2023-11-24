@@ -9,28 +9,36 @@ NOverlap = floor(NWindow * (Overlap / 100) );
 NFFT = max(256,2^nextpow2(NWindow));
 
 % Cut or zeropad signal
-NRequired = floor((Fs/2)/SpectralResolution);
+NRequired = floor((Fs)/SpectralResolution);
 
 if NSignal >= NRequired
     FFTSignal = Signal(1:NRequired);
+    FFTOutput = Output(1:NRequired);
 else
     FFTSignal = [Signal(1:end), zeros(1,NRequired-NSignal)];
+    FFTOutput = [Output(1:end), zeros(1,NRequired-NSignal)];
 end
 
 if WindowType == "hann"
     FFTSignal = FFTSignal.*hann(length(FFTSignal));
+    FFTOutput = FFTOutput.*hann(length(FFTOutput));
     Window = hann(NWindow);
 elseif WindowType == "hamming"
     FFTSignal = FFTSignal.*hamming(length(FFTSignal));
+    FFTOutput = FFTOutput.*hamming(length(FFTOutput));
     Window = hamming(NWindow);
 else
     Window = rectwin(NWindow);
 end
 
+% Make onesided FFT
 FFTSignal = fft(FFTSignal);
-% F = ( Fs/2/length(FFTSignal) ) : ( Fs/2/length(FFTSignal) ) : ( Fs/2 );
-% plot(F,20*log10(FFTSignal));
-% xlim([20 Fs/2]);
+FFTSignal = FFTSignal(1:length(FFTSignal)/2+1);
+FFTSignal(2:end) = 2*FFTSignal(2:end);
+
+FFTOutput = fft(FFTOutput);
+FFTOutput = FFTOutput(1:length(FFTOutput)/2+1);
+FFTOutput(2:end) = 2*FFTOutput(2:end);
 
 [SpectrogramS, SpectrogramF, SpectrogramT] = ...
-        spectrogram(Signal,'yaxis',Window,NOverlap,NFFT);
+        spectrogram(Signal, Window, NOverlap, NFFT);
