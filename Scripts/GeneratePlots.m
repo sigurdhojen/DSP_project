@@ -1,38 +1,13 @@
-%axisTypeX
-%axisTypeY
-%xLimTime
-%yLimTime
-%xLimFrequency
-%yLimFrequency
-%xLimFrequencyCopy
-%testing
-% fs = 10000;             % sampling frequency
-% T = 1;   % duration in time (which we'll calculate below to check)
-% A = 1;
-% freq = 500;
-% phas = 0;
-% [time_vector, signal] = generate_sin(fs,T,A,freq,phas);
-% axisTypeX = "l";
-% axisTypeY = "log";
-% xLimTime = [0,1];
-% yLimTime = [-2,2];
-% xLimFrequency = [0,fs/2];
-% yLimFrequency = [0,200];
-% a = [1 10];
-% b = [2 10 100];
-% sysTF=tf(a,b);
-% FFTSignal = fft(signal);
-
-%Frequency plots
+% Make frequency vector for FFT
 DeltaF = Fs/2 / length(FFTSignal);
 FreqVector = DeltaF:DeltaF:Fs/2;      % we'll hit fs/2
 
-%Time plots
+% Time plot
 TimePlot = figure("Units", "centimeters", ...
                   "Position", [0, 0, 15, 10], ...
                   "PaperSize", [15 10]);
-grid on
 hold on;
+grid on;
 plot(TimeVector, Signal, TimeVector, Output);
 xlim(XLimTime);
 ylim(YLimTime);
@@ -43,11 +18,12 @@ title('Input Signals');
 TimePlot.Visible = "Off";
 hold off;
 
-%"ImpResp"
+% Impulse Response Plot
 ImpulseResponsePlot = figure("Units", "centimeters", ...
                              "Position", [0, 0, 15, 10], ...
                              "PaperSize", [15 10]);
 hold on;
+
 if ResponseType == "iir"
     impz(num, denom);
 elseif ResponseType == "fir"
@@ -60,7 +36,7 @@ title('Impulse Response');
 ImpulseResponsePlot.Visible = "off";
 hold off;
 
-%"BodePLot"
+% BodePlot
 BodePlot = figure("Units", "centimeters", ...
                   "Position", [0, 0, 15, 10], ...
                   "PaperSize", [15 10]);
@@ -68,6 +44,7 @@ hold on;
 
 if ResponseType == "iir"
      [FreqzResonse,FreqzFrequency] = freqz(num,denom,[],Fs);
+
      subplot(2,1,1)
      if AxisTypeX == "log"
         semilogx(FreqzFrequency,20*log10(abs(FreqzResonse)))
@@ -78,6 +55,7 @@ if ResponseType == "iir"
      xlim(XLimFrequency)
      xlabel('Frequency [Hz]');
      ylabel('Magnitude [dB]');
+
      subplot(2,1,2)
      if AxisTypeX == "log"
         semilogx(FreqzFrequency,unwrap(angle(FreqzResonse))*180/pi)
@@ -89,6 +67,7 @@ if ResponseType == "iir"
      ylabel('Phase [Degree]');
 elseif ResponseType == "fir"
      [FreqzResonse,FreqzFrequency] = freqz(h,1,[],Fs);
+
      subplot(2,1,1)
      if AxisTypeX == "log"
         semilogx(FreqzFrequency,20*log10(abs(FreqzResonse)))
@@ -99,6 +78,7 @@ elseif ResponseType == "fir"
      xlim(XLimFrequency)
      xlabel('Frequency [Hz]');
      ylabel('Magnitude [dB]');
+
      subplot(2,1,2)
      if AxisTypeX == "log"
         semilogx(FreqzFrequency,unwrap(angle(FreqzResonse))*180/pi)
@@ -113,7 +93,7 @@ end
 BodePlot.Visible = "off";
 hold off;
 
-% RealImg
+% Real- and Imaginary part of FFT before and after filtering
 RIFFTPlot = figure("Units", "centimeters", ...
                    "Position", [0, 0, 15, 10], ...
                    "PaperSize", [15 10]);
@@ -293,6 +273,7 @@ if AxisTypeX == "lin"
         xlabel('Frequency [Hz]');
         ylabel('Amplitude');
         grid on;
+
         subplot(2,1,2)
         plot(FreqVector, abs(FFTOutput));
         title('FFT of Output Signal');
@@ -310,6 +291,7 @@ if AxisTypeX == "lin"
         xlabel('Frequency [Hz]');
         ylabel('Amplitude [dB]');
         grid on;
+
         subplot(2,1,2)
         plot(FreqVector, 20*log10(abs(FFTOutput)));
         title('FFT of Output Signal');
@@ -330,6 +312,7 @@ elseif AxisTypeX == "log"
         ylabel('Amplitude');
         title('FFT of Input Signal');
         grid on;
+
         subplot(2,1,2)
         plot(FreqVector, abs(FFTOutput));
         set(gca, 'xScale', 'log')
@@ -349,6 +332,7 @@ elseif AxisTypeX == "log"
         ylabel('Amplitude [dB]');
         title('FFT of Input Signal');
         grid on;
+
         subplot(2,1,2)
         plot(FreqVector, 20*log10(abs(FFTOutput)));
         set(gca, 'xScale', 'log')
@@ -367,22 +351,22 @@ hold off;
 PoleZeroPlot = figure("Units", "centimeters", ...
                       "Position", [0, 0, 15, 10], ...
                       "PaperSize", [15 10]);
-hold on
-zplane(num, denom)
+hold on;
+zplane(num, denom);
 if ResponseType == "fir"
-    title('Pole-Zero Plot of Prototype Filter')
+    title('Pole-Zero Plot of Prototype Filter');
 else
-    title('Pole-Zero Plot')
+    title('Pole-Zero Plot');
 end
 PoleZeroPlot.Visible = "off";
-hold off
+hold off;
 
 % Spectrogram
 SpectrogramPlot = figure("Units", "centimeters", ...
                          "Position", [0, 0, 15, 10], ...
                          "PaperSize", [15 10]);
-hold on
+hold on;
 spectrogram(Signal, Window, NOverlap, NFFT, Fs, "yaxis");
-title Spectrogram
+title('Spectrogram');
 SpectrogramPlot.Visible = "off";
-hold off
+hold off;

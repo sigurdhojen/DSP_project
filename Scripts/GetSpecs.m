@@ -9,7 +9,8 @@ if Input == "wav"
     % Get filename and it's sampling frequency
     FileName = GetNextLine(F);
     Fs = double(GetNextLine(F));
-    GetNextLine(F);GetNextLine(F);GetNextLine(F);GetNextLine(F);GetNextLine(F);
+    GetNextLine(F);GetNextLine(F);GetNextLine(F);
+    GetNextLine(F);GetNextLine(F);
 else
     % Get signal generator variables
     GetNextLine(F); GetNextLine(F);

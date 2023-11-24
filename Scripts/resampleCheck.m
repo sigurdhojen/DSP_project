@@ -1,4 +1,3 @@
-
 %%Script to check if read .wav file should be resampled based on given
 %%sampling frequency
 

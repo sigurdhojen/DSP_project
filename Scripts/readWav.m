@@ -1,4 +1,3 @@
-
 %%Script to read .wav file
 
 %Requires .wav file in current folder and set variables:
