@@ -49,8 +49,8 @@ end
 
 %Apply response type and filter
 if ResponseType == "fir"
-    [h,~] = impz(num, denom, floor(FilterOrder/2));
-    h = [flip(h(1+mod(FilterOrder+1,2):end)); h];
+    [h,~] = impz(num, denom, ceil(FilterOrder/2));
+    h = [flip(h(1+mod(FilterOrder,2):end)); h];
     Output = conv(h, Signal);
     Output = Output(1:length(Signal));
 elseif ResponseType == "iir"

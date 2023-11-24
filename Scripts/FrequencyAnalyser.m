@@ -40,5 +40,5 @@ FFTOutput = fft(FFTOutput);
 FFTOutput = FFTOutput(1:length(FFTOutput)/2+1);
 FFTOutput(2:end) = 2*FFTOutput(2:end);
 
-[SpectrogramS, SpectrogramF, SpectrogramT] = ...
-        spectrogram(Signal, Window, NOverlap, NFFT);
+%[SpectrogramS, SpectrogramF, SpectrogramT] = ...
+%        spectrogram(Signal, Window, NOverlap, NFFT, Fs, "yaxis");

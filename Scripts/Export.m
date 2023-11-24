@@ -9,12 +9,12 @@ save('ProcessedData.mat', 'Output');
 save('FilterCoefficients.mat', 'FC');
 
 % Save plots
-print(TimePlot, 'TimePlot', '-dpdf', '-fillpage');
-print(ImpulseResponsePlot, 'ImpulseResponsePlot', '-dpdf', '-fillpage');
-print(BodePlot, 'BodePlot', '-dpdf', '-fillpage');
-print(RIFFTPlot, 'RIFFTPlot', '-dpdf', '-fillpage');
-print(FFTPlot, 'FFTplot', '-dpdf', '-fillpage');
-print(PoleZeroPlot, 'PoleZeroPlot', '-dpdf', '-fillpage');
-print(SpectrogramPlot, 'SpectrogramPlot', '-dpdf', '-fillpage');
+print(TimePlot, 'PlotTime', '-dpdf', '-fillpage');
+print(ImpulseResponsePlot, 'PlotImpulseResponse', '-dpdf', '-fillpage');
+print(BodePlot, 'PlotBodePlot', '-dpdf', '-fillpage');
+print(RIFFTPlot, 'PlotRIFFT', '-dpdf', '-fillpage');
+print(FFTPlot, 'PlotFFT', '-dpdf', '-fillpage');
+print(PoleZeroPlot, 'PlotPoleZero', '-dpdf', '-fillpage');
+print(SpectrogramPlot, 'PlotSpectrogram', '-dpdf', '-fillpage');
 
 cd('..');
