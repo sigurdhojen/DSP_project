@@ -14,7 +14,7 @@ ylim(YLimTime);
 xlabel('Time [s]');
 ylabel('Amplitude');
 legend('Input Signal','Output Signal');
-title('Input Signals');
+title('Signals in Time');
 TimePlot.Visible = "Off";
 hold off;
 
@@ -27,12 +27,12 @@ hold on;
 if ResponseType == "iir"
     impz(num, denom);
 elseif ResponseType == "fir"
-    stem(h(1+floor(FilterOrder/2):end), "filled");
+    stem(h, "filled");
     xlabel('n (samples)');
     ylabel('Amplitude');
 end
 
-title('Impulse Response');
+title('Filter Impulse Response');
 ImpulseResponsePlot.Visible = "off";
 hold off;
 

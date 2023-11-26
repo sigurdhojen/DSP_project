@@ -9,3 +9,7 @@
 
 Path2WAV = fullfile('..', FileName);
 [SignalRead, FsRead] = audioread(Path2WAV);
+
+if iscolumn(SignalRead)
+    SignalRead = transpose(SignalRead);
+end
